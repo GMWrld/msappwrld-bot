@@ -10,7 +10,7 @@ const sneakersRoutes = require('./routes/sneakers.routes');
 const app = express();
 app.use(express.json());
 app.use(cors());
-
+//clear
 // Routes
 app.use('/sneakers', sneakersRoutes);
 
