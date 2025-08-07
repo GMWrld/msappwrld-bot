@@ -22,7 +22,8 @@ const sendSneakersOnWhatsApp = async (req, res) => {
     let message = `🔥 Sneaker Inventory (${sneakers.length} items):\n\n`;
 
     sneakers.slice(0, 5).forEach((sneaker, index) => {
-      message += `${index + 1}. ${sneaker.Name || 'Unnamed'} - ${sneaker.Brand || 'Unknown'} - $${sneaker.Price || '?'}\n`;
+    //   message += `${index + 1}. ${sneaker.Name || 'Unnamed'} - ${sneaker.Brand || 'Unknown'} - $${sneaker.Price || '?'} \n`;
+        message += `${index + 1}. ${sneaker.Name || 'Unnamed'} - ${sneaker.Brand || 'Unknown'} - $${sneaker.Price || '?'}\n🖼️ Image: ${sneaker.ImageURL || 'No image available'}\n\n`;
     });
 
     message += `\nView full inventory at: ${req.protocol}://${req.get('host')}/sneakers`;
