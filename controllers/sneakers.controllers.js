@@ -13,7 +13,7 @@ const getAllSneakers = async (req, res) => {
 
 
 // WhatsApp Controller
-const { sendWhatsAppMessage } = require('../services/whatsappService');
+const { sendWhatsAppMessage } = require('../services/whatsappServices');
 
 const sendSneakersOnWhatsApp = async (req, res) => {
   try {
