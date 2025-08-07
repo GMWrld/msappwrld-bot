@@ -16,22 +16,41 @@ const getAllSneakers = async (req, res) => {
 const { sendWhatsAppMessage } = require('../services/whatsappServices');
 
 const sendSneakersOnWhatsApp = async (req, res) => {
+//   try {
+//     const sneakers = await fetchSneakerInventory();
+//     const topSneakers = sneakers.slice(0, 5);
+
+//     let message = `🔥 Sneaker Inventory (${sneakers.length} items):\n\n`;
+//     let sneakerImage = '';
+
+//     sneakers.slice(0, 5).forEach((sneaker, index) => {
+//     message += `${index + 1}. ${sneaker.Name || 'Unnamed'} - ${sneaker.Brand || 'Unknown'} - $${sneaker.Price || '?'} \n`;
+//     // message += `${index + 1}. ${sneaker.Name || 'Unnamed'} - ${sneaker.Brand || 'Unknown'} - $${sneaker.Price || '?'}\n🖼️ Image: ${sneaker.ImageURL || 'No image available'}\n\n`;
+//     sneakerImage = '${sneaker.ImageURL || 'No image available'}\n';
+//     });
+
+//     message += `\nView full inventory at: ${req.protocol}://${req.get('host')}/sneakers`;
+
+//     await sendWhatsAppMessage(message, sneakerImage);
+
+//     res.status(200).json({ success: true, message: 'Sneakers sent to WhatsApp!' });
+//   } 
   try {
     const sneakers = await fetchSneakerInventory();
 
-    let message = `🔥 Sneaker Inventory (${sneakers.length} items):\n\n`;
+    const topSneakers = sneakers.slice(0, 5);
 
-    sneakers.slice(0, 5).forEach((sneaker, index) => {
-    //   message += `${index + 1}. ${sneaker.Name || 'Unnamed'} - ${sneaker.Brand || 'Unknown'} - $${sneaker.Price || '?'} \n`;
-        message += `${index + 1}. ${sneaker.Name || 'Unnamed'} - ${sneaker.Brand || 'Unknown'} - $${sneaker.Price || '?'}\n🖼️ Image: ${sneaker.ImageURL || 'No image available'}\n\n`;
-    });
+    for (const [index, sneaker] of topSneakers.entries()) {
+      const caption = `${index + 1}. ${sneaker.Name || 'Unnamed'} - ${sneaker.Brand || 'Unknown'} - $${sneaker.Price || '?'}\n`;
 
-    message += `\nView full inventory at: ${req.protocol}://${req.get('host')}/sneakers`;
-
-    await sendWhatsAppMessage(message);
-
-    res.status(200).json({ success: true, message: 'Sneakers sent to WhatsApp!' });
-  } catch (error) {
+      if (sneaker.ImageURL) {
+        await sendWhatsAppMessage(caption, sneaker.ImageURL);
+      } else {
+        await sendWhatsAppMessage(caption);
+      }
+    }res.status(200).json({ success: true, message: 'Sneakers sent to WhatsApp!' });
+  } 
+  catch (error) {
     console.error('Error sending WhatsApp message:', error);
     res.status(500).json({ success: false, message: 'Failed to send message.' });
   }
