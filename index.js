@@ -25,7 +25,7 @@ const db = admin.firestore();
 
 // Setup Google Sheets client
 const auth = new google.auth.GoogleAuth({
-  keyFile: process.env.GOOGLE_SHEETS_CREDENTIALS_PATH,
+  keyFile: process.env.GOOGLE_SHEET_ID,
   scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
 });
 const sheets = google.sheets({ version: 'v4', auth });
