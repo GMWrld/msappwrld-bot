@@ -11,10 +11,6 @@ const getAllSneakers = async (req, res) => {
   }
 };
 
-module.exports = {
-  getAllSneakers,
-};
-
 
 // WhatsApp Controller
 const { sendWhatsAppMessage } = require('../services/whatsappService');
