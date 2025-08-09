@@ -56,7 +56,51 @@ const sendSneakersOnWhatsApp = async (req, res) => {
   }
 };
 
+//Filter Sneakers Controller
+async function filterSneakers(req, res) {
+  try {
+    let sneakers = await fetchSneakerInventory();
+
+    const { brand, minPrice, maxPrice, gender, discount, style, available } = req.query;
+
+    if (brand) {
+      sneakers = sneakers.filter(s => s.Brand?.toLowerCase() === brand.toLowerCase());
+    }
+
+    if (minPrice) {
+      sneakers = sneakers.filter(s => Number(s.Price) >= Number(minPrice));
+    }
+
+    if (maxPrice) {
+      sneakers = sneakers.filter(s => Number(s.Price) <= Number(maxPrice));
+    }
+
+    if (gender) {
+      sneakers = sneakers.filter(s => s.Gender?.toLowerCase() === gender.toLowerCase());
+    }
+
+    if (discount === 'true') {
+      sneakers = sneakers.filter(s => Number(s.Price) < Number(s.Discount));
+    }
+
+    if (style) {
+      sneakers = sneakers.filter(s => s.StyleTags?.toLowerCase().includes(style.toLowerCase()));
+    }
+
+    if (available === 'true') {
+      sneakers = sneakers.filter(s => s.IsAvailable === true && s.Stock > 0);
+    }
+
+    res.json(sneakers);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
 module.exports = {
   getAllSneakers,
   sendSneakersOnWhatsApp,
+  filterSneakers
 };
