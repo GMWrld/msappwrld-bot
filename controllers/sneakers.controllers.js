@@ -35,6 +35,19 @@ const sendSneakersOnWhatsApp = async (req, res) => {
 
 //     res.status(200).json({ success: true, message: 'Sneakers sent to WhatsApp!' });
 //   } 
+
+
+// If filters exist, run filtered fetch, otherwise fetch all
+    let sneakers;
+    if (req.query || req.body) {
+      sneakers = await fetchSneakerInventory(req.query); // or pass req.body if POST
+    } else {
+      sneakers = await fetchSneakerInventory();
+    }
+
+    if (!sneakers.length) {
+      return res.status(404).json({ success: false, message: 'No sneakers found for given filters.' });
+    }
   try {
     const sneakers = await fetchSneakerInventory();
 
@@ -48,7 +61,10 @@ const sendSneakersOnWhatsApp = async (req, res) => {
       } else {
         await sendWhatsAppMessage(caption);
       }
-    }res.status(200).json({ success: true, message: 'Sneakers sent to WhatsApp!' });
+    }res.status(200).json({ 
+      success: true, 
+      message: `Sent ${topSneakers.length} sneaker(s) to WhatsApp!`,
+      filtersUsed: req.query || {} });
   } 
   catch (error) {
     console.error('Error sending WhatsApp message:', error);
