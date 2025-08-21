@@ -9,7 +9,7 @@ const {
 // GET /sneakers - Get all available sneakers
 router.get('/', getAllSneakers);
 // router.get('/filter', filterSneakers);
-router.get('/whatsapp', sendSneakersOnWhatsApp);
+router.post('/whatsapp', sendSneakersOnWhatsApp);
 
 
 module.exports = router;
