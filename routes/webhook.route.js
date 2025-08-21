@@ -1,3 +1,5 @@
+const { processUserMessage } = require('../services/messageProcessor');
+
 app.post('/webhook/whatsapp', async (req, res) => {
   try {
     const incoming = req.body;
