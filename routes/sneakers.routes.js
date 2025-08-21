@@ -8,8 +8,9 @@ const {
 
 // GET /sneakers - Get all available sneakers
 router.get('/', getAllSneakers);
-router.get('/whatsapp', sendSneakersOnWhatsApp);
 router.get('/filter', filterSneakers);
+router.get('/whatsapp', sendSneakersOnWhatsApp);
+
 
 module.exports = router;
 
