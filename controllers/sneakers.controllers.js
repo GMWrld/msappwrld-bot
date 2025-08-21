@@ -13,6 +13,67 @@ const getAllSneakers = async (req, res) => {
 
 
 // WhatsApp Controller
+// const { sendWhatsAppMessage } = require('../services/whatsappServices');
+
+// const sendSneakersOnWhatsApp = async (req, res) => {
+// //   try {
+// //     const sneakers = await fetchSneakerInventory();
+// //     const topSneakers = sneakers.slice(0, 5);
+
+// //     let message = `🔥 Sneaker Inventory (${sneakers.length} items):\n\n`;
+// //     let sneakerImage = '';
+
+// //     sneakers.slice(0, 5).forEach((sneaker, index) => {
+// //     message += `${index + 1}. ${sneaker.Name || 'Unnamed'} - ${sneaker.Brand || 'Unknown'} - $${sneaker.Price || '?'} \n`;
+// //     // message += `${index + 1}. ${sneaker.Name || 'Unnamed'} - ${sneaker.Brand || 'Unknown'} - $${sneaker.Price || '?'}\n🖼️ Image: ${sneaker.ImageURL || 'No image available'}\n\n`;
+// //     sneakerImage = '${sneaker.ImageURL || 'No image available'}\n';
+// //     });
+
+// //     message += `\nView full inventory at: ${req.protocol}://${req.get('host')}/sneakers`;
+
+// //     await sendWhatsAppMessage(message, sneakerImage);
+
+// //     res.status(200).json({ success: true, message: 'Sneakers sent to WhatsApp!' });
+// //   } 
+
+
+// // If filters exist, run filtered fetch, otherwise fetch all
+//     let sneakers;
+//     if (req.query || req.body) {
+//       sneakers = await fetchSneakerInventory(req.query); // or pass req.body if POST
+//     } else {
+//       sneakers = await fetchSneakerInventory();
+//     }
+
+//     if (!sneakers.length) {
+//       return res.status(404).json({ success: false, message: 'No sneakers found for given filters.' });
+//     }
+//   try {
+//     const sneakers = await fetchSneakerInventory();
+
+//     const topSneakers = sneakers.slice(0, 5);
+
+//     for (const [index, sneaker] of topSneakers.entries()) {
+//       const caption = `${index + 1}. ${sneaker.Name || 'Unnamed'} - ${sneaker.Brand || 'Unknown'} - $${sneaker.Price || '?'}\n`;
+
+//       if (sneaker.ImageURL) {
+//         await sendWhatsAppMessage(caption, sneaker.ImageURL);
+//       } else {
+//         await sendWhatsAppMessage(caption);
+//       }
+//     }res.status(200).json({ 
+//       success: true, 
+//       message: `Sent ${topSneakers.length} sneaker(s) to WhatsApp!`,
+//       filtersUsed: req.query || {} });
+//   } 
+//   catch (error) {
+//     console.error('Error sending WhatsApp message:', error);
+//     res.status(500).json({ success: false, message: 'Failed to send message.' });
+//   }
+// };
+
+const { sendWhatsAppMessage } = require('../services/whatsappServices');
+
 const sendSneakersOnWhatsApp = async (req, res) => {
   try {
     let sneakers = await fetchSneakerInventory();
@@ -70,55 +131,51 @@ const sendSneakersOnWhatsApp = async (req, res) => {
   }
 };
 
-module.exports = {
-  sendSneakersOnWhatsApp
-};
-
 //Filter Sneakers Controller
-async function filterSneakers(req, res) {
-  try {
-    let sneakers = await fetchSneakerInventory();
+// async function filterSneakers(req, res) {
+//   try {
+//     let sneakers = await fetchSneakerInventory();
 
-    const { brand, minPrice, maxPrice, gender, discount, style, available } = req.query;
+//     const { brand, minPrice, maxPrice, gender, discount, style, available } = req.query;
 
-    if (brand) {
-      sneakers = sneakers.filter(s => s.Brand?.toLowerCase() === brand.toLowerCase());
-    }
+//     if (brand) {
+//       sneakers = sneakers.filter(s => s.Brand?.toLowerCase() === brand.toLowerCase());
+//     }
 
-    if (minPrice) {
-      sneakers = sneakers.filter(s => Number(s.Price) >= Number(minPrice));
-    }
+//     if (minPrice) {
+//       sneakers = sneakers.filter(s => Number(s.Price) >= Number(minPrice));
+//     }
 
-    if (maxPrice) {
-      sneakers = sneakers.filter(s => Number(s.Price) <= Number(maxPrice));
-    }
+//     if (maxPrice) {
+//       sneakers = sneakers.filter(s => Number(s.Price) <= Number(maxPrice));
+//     }
 
-    if (gender) {
-      sneakers = sneakers.filter(s => s.Gender?.toLowerCase() === gender.toLowerCase());
-    }
+//     if (gender) {
+//       sneakers = sneakers.filter(s => s.Gender?.toLowerCase() === gender.toLowerCase());
+//     }
 
-    if (discount === 'true') {
-      sneakers = sneakers.filter(s => Number(s.Price) < Number(s.Discount));
-    }
+//     if (discount === 'true') {
+//       sneakers = sneakers.filter(s => Number(s.Price) < Number(s.Discount));
+//     }
 
-    if (style) {
-      sneakers = sneakers.filter(s => s.StyleTags?.toLowerCase().includes(style.toLowerCase()));
-    }
+//     if (style) {
+//       sneakers = sneakers.filter(s => s.StyleTags?.toLowerCase().includes(style.toLowerCase()));
+//     }
 
-    if (available === 'true') {
-      sneakers = sneakers.filter(s => s.IsAvailable === true && s.Stock > 0);
-    }
+//     if (available === 'true') {
+//       sneakers = sneakers.filter(s => s.IsAvailable === true && s.Stock > 0);
+//     }
 
-    res.json(sneakers);
+//     res.json(sneakers);
 
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// }
 
 
 module.exports = {
   getAllSneakers,
-  sendSneakersOnWhatsApp,
-  filterSneakers
+  sendSneakersOnWhatsApp
+  // filterSneakers
 };
